@@ -1,6 +1,8 @@
 use super::*;
 
 const TAB_SCROLL_BUTTON_WIDTH: u16 = 3;
+const TAB_CAP_LEFT: &str = "\u{e0b6}";
+const TAB_CAP_RIGHT: &str = "\u{e0b4}";
 const MIN_TAB_STRIP_WIDTH: u16 =
     MIN_TAB_WIDTH + NEW_TAB_WIDTH + TAB_SCROLL_BUTTON_WIDTH.saturating_mul(2);
 
@@ -123,6 +125,21 @@ pub(crate) fn render_tab_bar(
             right_padding = padding.saturating_sub(left) as usize,
         );
         put_text(buffer, rect.x, rect.y, rect.width, &text, style);
+        if width >= 2 {
+            // Rounded pill caps (Nerd Font powerline glyphs): tab colour on the bar background.
+            let cap_style = Style::default()
+                .fg(style.bg.unwrap_or(palette.surface0))
+                .bg(palette.panel_bg);
+            put_text(buffer, rect.x, rect.y, 1, TAB_CAP_LEFT, cap_style);
+            put_text(
+                buffer,
+                rect.right() - 1,
+                rect.y,
+                1,
+                TAB_CAP_RIGHT,
+                cap_style,
+            );
+        }
         hits.tabs.push((rect, tab.tab_id.clone()));
         first_visible.get_or_insert(index);
         last_visible = Some(index);
