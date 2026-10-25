@@ -1,0 +1,7 @@
+[tools]
+rust = "1.96.1"
+zig = "0.16.0"
+
+[tasks."dev:ci"]
+description = "Merge gate: fmt + clippy + tests; with -- --changed, tests only the modules of files changed vs origin/master"
+run = "pwsh -NoProfile -File scripts/dev-ci.ps1"
