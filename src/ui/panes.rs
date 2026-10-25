@@ -601,7 +601,11 @@ fn render_pane_borders(
         } else {
             app.palette.overlay0
         };
-        cell.set_style(Style::default().fg(color));
+        let mut style = Style::default().fg(color);
+        if focused {
+            style = style.add_modifier(Modifier::BOLD);
+        }
+        cell.set_style(style);
     }
 
     render_pane_border_titles(app, ws, pane_infos, frame);
@@ -795,10 +799,10 @@ fn line_cell_symbol(line: LineCell) -> &'static str {
         (false, false, true, true) | (false, false, true, false) | (false, false, false, true) => {
             "─"
         }
-        (false, true, false, true) => "┌",
-        (false, true, true, false) => "┐",
-        (true, false, false, true) => "└",
-        (true, false, true, false) => "┘",
+        (false, true, false, true) => "╭",
+        (false, true, true, false) => "╮",
+        (true, false, false, true) => "╰",
+        (true, false, true, false) => "╯",
         _ => "",
     }
 }
